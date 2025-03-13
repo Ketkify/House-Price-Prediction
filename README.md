@@ -61,69 +61,8 @@ To execute the script, run:
 python house_price_prediction.py
 ```
 
-## Code
-```python
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import pickle
-
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.linear_model import LinearRegression
-from xgboost import XGBRegressor
-from catboost import CatBoostRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-
-# Load data
-data = pd.read_csv("housing.csv").dropna()
-
-data_encoded = pd.get_dummies(data, drop_first=True)
-
-# Feature Engineering
-data_encoded['income_per_room'] = data_encoded['median_income'] / data_encoded['total_rooms']
-data_encoded['bedrooms_per_household'] = data_encoded['total_bedrooms'] / data_encoded['households']
-data_encoded['population_per_household'] = data_encoded['population'] / data_encoded['households']
-
-X = data_encoded.drop("median_house_value", axis=1)
-y = data_encoded["median_house_value"]
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-models = {
-    "Linear Regression": LinearRegression(),
-    "Random Forest": RandomForestRegressor(n_estimators=100, random_state=42),
-    "Gradient Boosting": GradientBoostingRegressor(n_estimators=300, random_state=42),
-    "XGBoost": XGBRegressor(n_estimators=300, random_state=42),
-    "CatBoost": CatBoostRegressor(iterations=300, verbose=0, random_state=42)
-}
-
-results = {}
-
-for name, model in models.items():
-    print(f"Training {name}...")
-    model.fit(X_train_scaled, y_train)
-    y_pred = model.predict(X_test_scaled)
-    
-    results[name] = {
-        "MAE": mean_absolute_error(y_test, y_pred),
-        "RMSE": np.sqrt(mean_squared_error(y_test, y_pred)),
-        "R²": r2_score(y_test, y_pred)
-    }
-
-# Save best model
-best_model = models["XGBoost"]
-with open("model.pkl", "wb") as file:
-    pickle.dump(best_model, file)
-
-print("Best model saved as 'model.pkl'")
-```
+## Live Demo
+Check out the live project here: [House Price Prediction](https://house-price-prediction-nm9f.onrender.com)
 
 ## Author
 Ketki Bansod
