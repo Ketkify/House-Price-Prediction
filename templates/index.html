@@ -1,78 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>House Price Prediction</title>
+    <title>🏡 House Price Prediction</title>
     <style>
+        /* 🔹 Dark Brown Background */
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            font-family: 'Poppins', sans-serif;
+            background: #3e2723;  /* Dark Brown */
             text-align: center;
             margin: 0;
             padding: 0;
-            color: white;
+            color: white; /* White text for better contrast */
         }
+
+        /* 🔹 Container with Glassmorphism Effect */
         .container {
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 12px;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 20px;
             margin: 50px auto;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
+
         h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
+
+        /* 🔹 Input & Select Styling */
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         label {
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 12px;
+            display: block;
         }
+
         input, select {
-            width: 90%;
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             margin: 5px 0;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             background: rgba(255, 255, 255, 0.9);
             outline: none;
             transition: 0.3s ease;
+            box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         input:focus, select:focus {
-            box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
         }
+
+        /* 🔹 Predict Button (Black) */
         button {
-            background: #ff4b5c;
+            background: #000000;  /* Black */
             color: white;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 18px;
             font-weight: bold;
-            margin-top: 15px;
+            margin-top: 20px;
             cursor: pointer;
             transition: 0.3s ease;
+            width: 100%;
         }
+
         button:hover {
-            background: #ff1e42;
+            background: #222222; /* Slightly lighter black */
             transform: scale(1.05);
         }
+
+        /* 🔹 Predicted Price Text (Black Box) */
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 22px;
+            padding: 10px;
+            border-radius: 10px;
+            background: #000000; /* Black */
+            color: white;
+            box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 🔹 Predicted Price Range (Black Box) */
+        .price-range {
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            background: #000000; /* Black */
+            color: white;
+            box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 🔹 Error Message */
         .error {
             color: #ff4b5c;
             font-weight: bold;
             margin-top: 15px;
-        }
-        .result {
-            color: #6a0dad;
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 20px;
+            font-size: 18px;
         }
     </style>
 </head>
@@ -80,22 +119,30 @@
     <div class="container">
         <h1>🏡 House Price Prediction</h1>
         <form action="/predict" method="post">
-            <label for="longitude">Longitude (e.g., -122.23):</label>
+            <label for="longitude">Longitude:</label>
             <input type="text" name="longitude" required placeholder="Enter longitude (-180 to 180)">
-            <label for="latitude">Latitude (e.g., 37.88):</label>
+            
+            <label for="latitude">Latitude:</label>
             <input type="text" name="latitude" required placeholder="Enter latitude (-90 to 90)">
+            
             <label for="housing_median_age">Housing Median Age (years):</label>
             <input type="text" name="housing_median_age" required placeholder="Enter age (0-100)">
+            
             <label for="total_rooms">Total Rooms:</label>
             <input type="text" name="total_rooms" required placeholder="Enter total number of rooms">
+            
             <label for="total_bedrooms">Total Bedrooms:</label>
             <input type="text" name="total_bedrooms" required placeholder="Enter total number of bedrooms">
+            
             <label for="population">Population:</label>
             <input type="text" name="population" required placeholder="Enter total population of area">
+            
             <label for="households">Households:</label>
             <input type="text" name="households" required placeholder="Enter number of households">
+            
             <label for="median_income">Median Income (in tens of thousands):</label>
             <input type="text" name="median_income" required placeholder="Enter median income (e.g., 3.5)">
+            
             <label for="ocean_proximity">Ocean Proximity:</label>
             <select name="ocean_proximity" required>
                 <option value="<1H OCEAN">Less than 1 Hour Ocean</option>
@@ -104,17 +151,23 @@
                 <option value="NEAR BAY">Near Bay</option>
                 <option value="NEAR OCEAN">Near Ocean</option>
             </select>
+            
             <button type="submit">🔍 Predict Price</button>
         </form>
 
-        <!-- Error message -->
+        <!-- Error Message -->
         {% if error %}
             <h2 class="error">{{ error }}</h2>
         {% endif %}
 
-        <!-- Predicted price -->
+        <!-- Predicted Price -->
         {% if prediction is not none %}
             <h2 class="result">🏡 Predicted Price: ${{ prediction }}</h2>
+        {% endif %}
+
+        <!-- Price Range Display -->
+        {% if price_range is not none %}
+            <h2 class="price-range">📊 Price Range: {{ price_range }}</h2>
         {% endif %}
     </div>
 </body>
